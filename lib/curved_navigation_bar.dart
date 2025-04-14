@@ -62,7 +62,7 @@ class CurvedNavigationBar extends StatefulWidget {
     this.backgroundColor = Colors.blueAccent,
     this.onTap,
     _LetIndexPage? letIndexChange,
-    this.animationCurve = Curves.easeOut,
+    this.animationCurve = Curves.linear,
     this.animationDuration = const Duration(milliseconds: 600),
     this.iconPadding = 12.0,
     this.maxWidth,
@@ -87,7 +87,6 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
   late Widget _icon;
   late AnimationController _animationController;
   late int _length;
-  double _buttonHide = 0;
 
   @override
   void initState() {
@@ -99,17 +98,15 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
     _endingIndex = widget.index;
     _animationController = AnimationController(vsync: this, value: _pos);
     _animationController.addListener(() {
-      setState(() {
-        _pos = _animationController.value;
-        final endingPos = _endingIndex / widget.items.length;
-        final middle = (endingPos + _startingPos) / 2;
-        if ((endingPos - _pos).abs() < (_startingPos - _pos).abs()) {
-          _icon = widget.items[_endingIndex].child;
-        }
-        _buttonHide =
-            (1 - ((middle - _pos) / (_startingPos - middle)).abs()).abs();
-      });
-    });
+  setState(() {
+    _pos = _animationController.value;
+    final endingPos = _endingIndex / widget.items.length;
+    if ((endingPos - _pos).abs() < (_startingPos - _pos).abs()) {
+      _icon = widget.items[_endingIndex].child;
+    }
+  });
+});
+);
   }
 
   @override
@@ -171,7 +168,7 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
                       width: maxWidth / _length,
                       child: Center(
                         child: Transform.translate(
-                          offset: Offset(0, (_buttonHide - 1) * 80),
+                          offset: Offset.zero,
                           child: Material(
                             color: widget.buttonBackgroundColor ?? widget.color,
                             type: MaterialType.circle,
