@@ -98,15 +98,14 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
     _endingIndex = widget.index;
     _animationController = AnimationController(vsync: this, value: _pos);
     _animationController.addListener(() {
-  setState(() {
-    _pos = _animationController.value;
-    final endingPos = _endingIndex / widget.items.length;
-    if ((endingPos - _pos).abs() < (_startingPos - _pos).abs()) {
-      _icon = widget.items[_endingIndex].child;
-    }
-  });
-});
-);
+      setState(() {
+        _pos = _animationController.value;
+        final endingPos = _endingIndex / widget.items.length;
+        if ((endingPos - _pos).abs() < (_startingPos - _pos).abs()) {
+          _icon = widget.items[_endingIndex].child;
+        }
+      });
+    });
   }
 
   @override
