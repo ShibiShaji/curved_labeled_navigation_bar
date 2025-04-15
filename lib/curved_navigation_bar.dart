@@ -115,9 +115,13 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
       final newPosition = widget.index / _length;
       _startingPos = _pos;
       _endingIndex = widget.index;
-
-      // REMOVE animation for instant jump
-      _animationController.value = newPosition;
+      _animationController.animateTo(
+        newPosition,
+        duration: widget.animationDuration,
+        curve: widget.animationCurve,
+      );
+    }
+    if (!_animationController.isAnimating) {
       _icon = widget.items[_endingIndex].child;
     }
   }
@@ -238,10 +242,11 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
     setState(() {
       _startingPos = _pos;
       _endingIndex = index;
-
-      // Skip animation: set the new position directly
-      _animationController.value = newPosition;
-      _icon = widget.items[_endingIndex].child;
+      _animationController.animateTo(
+        newPosition,
+        duration: widget.animationDuration,
+        curve: widget.animationCurve,
+      );
     });
   }
 }
